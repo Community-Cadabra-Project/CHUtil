@@ -1,9 +1,9 @@
-proc _properties_init_self() {
+proc _util_properties_init_self() {
     @self = array()
 
-    # param @private_count - счетчик добавление аргументов, необходим для сортировки
-    # param @private_store - карта аргументов
-    # param @private_link - карта связки ключей и их значения @private_count
+    # field @private_count - счетчик добавление аргументов, необходим для сортировки
+    # field @private_store - карта аргументов
+    # field @private_link - карта связки ключей и их значения @private_count
 
     @self['private_count'] = 0
     @self['private_store'] = array()
@@ -12,73 +12,73 @@ proc _properties_init_self() {
     return(@self)
 }
 
-proc _private_properties_add_link(@self, @key) {
+proc _private_util_properties_add_link(@self, @key) {
     @self['private_link'][@key] = @self['private_count']
     @self['private_count']++
 }
 
-proc _properties_get_string(@self, @key) {
+proc _util_properties_get_string(@self, @key) {
     return(@self['private_store'][@key])
 }
 
-proc _properties_get_array(@self, @key) {
+proc _util_properties_get_array(@self, @key) {
     return(array_get(@self['private_store'][@key]))
 }
 
-proc _properties_get_int(@self, @key) {
+proc _util_properties_get_int(@self, @key) {
     return(integer(@self['private_store'][@key]))
 }
 
-proc _properties_get_bool(@self, @key) {
+proc _util_properties_get_bool(@self, @key) {
     return(boolean((@self['private_store'][@key])))
 }
 
-proc _properties_pull(@self, @key, @value) {
-    _private_properties_add_link(@self, @key)
+proc _util_properties_pull(@self, @key, @value) {
+    _private_util_properties_add_link(@self, @key)
     @self['private_store'][@key] = @value
 }
 
-proc _properties_add_all(@self, @map) {
+proc _util_properties_add_all(@self, @map) {
     foreach(@key: @value in @map) {
         _properties_pull(@self, @key, @value)
     }
 }
 
-proc _properties_contains(@self, @key) {
+proc _util_properties_contains(@self, @key) {
     return(boolean(array_index_exists(@self['private_store'], @key)))
 }
 
-proc _properties_key_set(@self) {
+proc _util_properties_key_set(@self) {
     return(array_keys(@self['private_store']))
 }
 
-proc _properties_remove_all(@self, @key_set) {
+proc _util_properties_remove_all(@self, @key_set) {
     foreach(@key in @key_set) {
         _properties_remove(@self, @key)
     }
 }
 
-proc _properties_remove(@self, @key) {
+proc _util_properties_remove(@self, @key) {
     @temp = @self['private_store'][@key]
     array_remove(@self['private_store'], @key)
     array_remove(@self['private_link'], @key)
     return(@temp)
 }
 
-proc _properties_clear(@self, @key) {
+proc _util_properties_clear(@self, @key) {
     @self['private_count'] = 0
     @self['private_store'] = array()
     @self['private_link'] = array()
 }
 
-proc _properties_is_empty(@self) {
+proc _util_properties_is_empty(@self) {
     return(array_size(array_keys(@self['private_store'])) == 0)
 }
 
-proc _properties_parse_string(@self, @text) {
+proc _util_properties_parse_string(@self, @text) {
     @entries = split("\n", @text)
     for(@i = 0, @i < array_size(@entries), @i++) {
-         if (trim(@entries[@i]) == "", continue())
+        if (trim(@entries[@i]) == "", continue())
         if (@entries[@i][0] == '#', continue())
         @key_value = reg_split("[=]", @entries[@i])
         if (array_size(@key_value) != 2) {
@@ -90,7 +90,7 @@ proc _properties_parse_string(@self, @text) {
     }
 }
 
-proc _properties_to_string(@self) {
+proc _util_properties_to_string(@self) {
     if (_properties_is_empty(@self), return(""))
     @builder = res_create_resource('STRING_BUILDER')
     @store = array()

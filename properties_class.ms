@@ -12,7 +12,7 @@ proc _private_properties_init_fields() {
     return(@self)
 }
 
-proc _create_properties_object() {
+proc _new_properties_object() {
     @self = _private_properties_init_fields()
 
     @self['private_add_link'] = closure(@key) {

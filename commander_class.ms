@@ -10,7 +10,7 @@ proc _private_util_commander_init_fields() {
 }
 
 proc _util_new_commander_object() {
-    @self = _private_commander_init_fields()
+    @self = _private_util_commander_init_fields()
 
     @self['register'] = closure(@key, closure @lymda) {
         @self['private_commands'][@key] = @lymda
@@ -20,14 +20,26 @@ proc _util_new_commander_object() {
         execute(@key, closure(){call_proc(@proc_name, @arguments)}, @self['register'])
     }
 
-    @self('unregister') = closure(@key) {
+    @self['unregister'] = closure(@key) {
         array_remove(@self['private_commands'], @key)
     }
 
     @self['execute'] = closure(@key) {
         execute(@arguments, @self['private_commands'][@key])
     }
+
+    @self['clear'] = closure() {
+        @self['private_commands'] = array()
+    }
+
+    @self['is_register'] = closure(@key) {
+        return(array_index_exists(@self['private_commands'], @key))
+    }
+
+    return(@self)
 }
 
-console('CHUtil: commander_class.ms loaded')
+if (import('script_log')) {
+    console('CHUtil: commander_class.ms loaded')
+}
 

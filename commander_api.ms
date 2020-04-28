@@ -25,4 +25,14 @@ proc _util_commander_execute(@self, @key) {
     return(execute(@arguments, @self['private_commands'][@key]))
 }
 
-console('CHUtil: commander_api.ms loaded')
+proc _util_commander_clear(@self) {
+    @self['private_commands'] = array()
+}
+
+proc _unit_commander_is_register(@self, @key) {
+    return(array_index_exists(@self['private_commands'], @key))
+}
+
+if (import('script_log')) {
+    console('CHUtil: commander_api.ms loaded')
+}

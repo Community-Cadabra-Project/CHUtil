@@ -33,7 +33,7 @@ proc _util_properties_get_bool(@self, @key) {
     return(boolean((@self['private_store'][@key])))
 }
 
-proc _util_properties_pull(@self, @key, @value) {
+proc _util_properties_push(@self, @key, @value) {
     _private_util_properties_add_link(@self, @key)
     @self['private_store'][@key] = @value
 }
@@ -108,4 +108,7 @@ proc _util_properties_to_string(@self) {
     return(string(@builder))
 }
 
-console('CHUtil: properties_api.ms loaded')
+
+if (import('script_log')) {
+    console('CHUtil: properties_api.ms loaded')
+}

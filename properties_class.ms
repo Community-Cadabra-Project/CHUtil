@@ -12,7 +12,7 @@ proc _private_properties_init_fields() {
     return(@self)
 }
 
-proc _new_properties_object() {
+proc _util_new_properties_object() {
     @self = _private_properties_init_fields()
 
     @self['private_add_link'] = closure(@key) {
@@ -36,14 +36,14 @@ proc _new_properties_object() {
         return(boolean((@self['private_store'][@key])))
     }
 
-    @self['pull'] = closure(@key, @value) {
+    @self['push'] = closure(@key, @value) {
         execute(@key, @self['private_add_link'])
         @self['private_store'][@key] = @value
     }
 
     @self["add_all"] = closure(@map) {
         foreach(@key: @value in @map) {
-            @execute(@key, @value, @self['pull'])
+            @execute(@key, @value, @self['push'])
         }
     }
 
@@ -89,7 +89,7 @@ proc _new_properties_object() {
             }
             @key = @entry[0]
             @value = @entry[1]
-            execute(@key, @value, @self['pull'])
+            execute(@key, @value, @self['push'])
         }
     }
 
@@ -114,5 +114,8 @@ proc _new_properties_object() {
     return(@self)
 }
 
-console('CHUtil: properties_class.ms loaded')
+
+if (import('script_log')) {
+    console('CHUtil: properties_class.ms loaded')
+}
 

@@ -86,12 +86,12 @@ proc _util_properties_parse_string(@self, @text) {
         }
         @key = @key_value[0]
         @value = @key_value[1]
-        _properties_pull(@self, @key, @value)
+        _util_properties_push(@self, @key, @value)
     }
 }
 
 proc _util_properties_to_string(@self) {
-    if (_properties_is_empty(@self), return(""))
+    if (_util_properties_is_empty(@self), return(""))
     @builder = res_create_resource('STRING_BUILDER')
     @store = array()
     foreach(@key: @value in @self['private_store']) {

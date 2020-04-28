@@ -44,6 +44,19 @@ proc _unit_entries_to_assoc(array @array) {
     return(@map)
 }
 
+proc _util_get_all_scripts(@path) {
+    @files = array()
+    @list_files = list_files(@path)
+    foreach(@file in @list_files) {
+        if (string_contains(@file, '.')) {
+            if (string_contains(@file, '.ms'), array_push(@files, @path.'\\'.@file))
+        } else {
+            array_push_all(@files, _util_get_all_scripts(@path.'\\'.@file))
+        }
+    }
+    return(@files)
+}
+
 
 if (import('script_log')) {
     console('CHUtil: proc.ms loaded')

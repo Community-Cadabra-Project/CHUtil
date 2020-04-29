@@ -9,8 +9,10 @@ Commander API:
     - commander_class.ms
 Other API
     - proc.ms
+    - method_executers.ms
 */
 
+include('method_executers.ms')
 include('properties_api.ms')
 include('properties_class.ms')
 include('commander_api.ms')

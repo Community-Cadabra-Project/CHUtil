@@ -1,4 +1,4 @@
-proc _unit_split_arg(@arg, @pref) {
+proc _util_split_arg(@arg, @pref) {
     @args = split(" ", @arg)
     @len = length(@args)
     @len_pref = length(@pref)
@@ -22,13 +22,13 @@ proc _unit_split_arg(@arg, @pref) {
     return(@model)
 }
 
-proc _unit_sort_entries(array @array, @comp=closure(@l, @r){return(@l[0] > @r[0])}) {
+proc _util_sort_entries(array @array, @comp=closure(@l, @r){return(@l[0] > @r[0])}) {
     @temp_array = _unit_associative_to_entries(@array)
     array_sort(@temp_array, @comp)
     return(@temp_array)
 }
 
-proc _unit_assoc_to_entries(array @array) {
+proc _util_assoc_to_entries(array @array) {
     array @new_array = array()
     foreach(@key: @value in @array) {
         array_push(@new_array, array(@key, @value))
@@ -36,7 +36,7 @@ proc _unit_assoc_to_entries(array @array) {
     return(@new_array)
 }
 
-proc _unit_entries_to_assoc(array @array) {
+proc _util_entries_to_assoc(array @array) {
     array @map = array()
     foreach(@entry in @array) {
         @map[@entry[0]] = @entry[1]

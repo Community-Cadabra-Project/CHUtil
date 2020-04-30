@@ -57,6 +57,47 @@ proc _util_get_all_scripts(@path) {
     return(@files)
 }
 
+proc _util_arrays_and(@arr1, @arr2) {
+    if (is_associative(@arr1)) {
+        throw(CastException, 'arr1 must be not associative array')
+    } else if (is_associative(@arr2)) {
+        throw(CastException, 'arr2 must be not associative array')
+    }
+    @result = array()
+    foreach(@val in @arr1) {
+        if (array_contains(@arr2, @val), array_push(@result, @val))
+    }
+    return(@result)
+}
+
+proc _util_array_or(@arr1, @arr2) {
+    if (is_associative(@arr1)) {
+        throw(CastException, 'arr1 must be not associative array')
+    } else if (is_associative(@arr2)) {
+        throw(CastException, 'arr2 must be not associative array')
+    }
+    @carr1 = @arr1[]
+    @carr2 = @arr2[]
+    @result = array()
+    foreach(@val in @arr1) {
+        if (!array_contains(@arr2, @val), array_push(@result, @val), array_remove(@arr2, @val))
+    }
+    array_push_all(@result, @carr2)
+    return(@result)
+}
+
+proc _util_array_minus(@arr1, @arr2) {
+    if (is_associative(@arr1)) {
+        throw(CastException, 'arr1 must be not associative array')
+    } else if (is_associative(@arr2)) {
+        throw(CastException, 'arr2 must be not associative array')
+    }
+    @result = array()
+    foreach(@val in @arr1) {
+        if (!array_contains(@arr2, @val), array_push(@result, @val))
+    }
+    return(@result)
+}
 
 if (import('script_log')) {
     console('CHUtil: proc.ms loaded')

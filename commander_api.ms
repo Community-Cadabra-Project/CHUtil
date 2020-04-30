@@ -22,7 +22,11 @@ proc _util_commander_unregister(@self, @key) {
 }
 
 proc _util_commander_execute(@self, @key) {
-    return(execute(@arguments, @self['private_commands'][@key]))
+    if (array_size(@arguments) > 2) {
+        return(execute(@arguments[2], @self['private_commands'][@key]))
+    } else {
+        return(execute(@self['private_commands'][@key]))
+    }
 }
 
 proc _util_commander_clear(@self) {

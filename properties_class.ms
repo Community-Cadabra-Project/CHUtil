@@ -33,6 +33,14 @@
 @__util_methods_properties['key_set'] = closure(@self) {
     return(array_keys(@self['private_store']))
 }
+@__util_methods_properties['values'] = closure(@self) {
+    @values = array()
+    array_push_all(@values, @store['private_store'])
+    return(@values)
+}
+@__util_methods_properties['to_map'] = closure(@self) {
+    return(@self['private_store'][])
+}
 @__util_methods_properties['remove_all'] = closure(@self, @key_set) {
     foreach(@key in @key_set) {
         _method1(@self, 'remove', @key)

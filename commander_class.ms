@@ -28,7 +28,11 @@
     array_remove(@self['private_commands'], @key)
 }
 @__util_methods_commander['execute'] = closure(@self, @key) {
-    execute(@arguments, @self['private_commands'][@key])
+    if (array_size(@arguments) > 2) {
+        return(execute(@arguments[2], @self['private_commands'][@key]))
+    } else {
+        return(execute(@self['private_commands'][@key]))
+    }
 }
 @__util_methods_commander['clear'] = closure(@self) {
     @self['private_commands'] = array()

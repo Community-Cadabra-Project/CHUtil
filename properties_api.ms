@@ -52,6 +52,16 @@ proc _util_properties_key_set(@self) {
     return(array_keys(@self['private_store']))
 }
 
+proc _util_properties_values(@self) {
+    @values = array()
+    array_push_all(@values, @store['private_store'])
+    return(@values)
+}
+
+proc _util_properties_to_map(@self) {
+    return(@self['private_store'][])
+}
+
 proc _util_properties_remove_all(@self, @key_set) {
     foreach(@key in @key_set) {
         _properties_remove(@self, @key)

@@ -1,6 +1,6 @@
 @__util_method_exc_msg = 'Number of arguments does not match the required.'
 proc _method(@self, @key) {
-    return(execute(@self, @self[@key], @arguments))
+    return(execute(@self, @arguments, @self[@key]))
 }
 proc _method1(@self, @key, @p1) {
     if (array_size(@arguments) != 2 + 1) {

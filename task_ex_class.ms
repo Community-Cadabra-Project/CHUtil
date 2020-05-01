@@ -95,6 +95,15 @@
 ########################################################################################
 
 @util_new_task_ex_object = closure(@id, @number, @delay, boolean @start) {
+
+    # param @private_tasks  - (array) задачи, ожидающие своего выполнения (очередь)
+    # param @private_id     - (string) название потока, запускающего задачи
+    # param @private_count  - (int) счетчик задач для индвификации
+    # param @private_delay  - (int) время задержки проверки возможности запустить новую задачу в секундах
+    # param @private_is_run - (boolean) true если поток исполнения запущен, иначе false
+    # param @private_number - (int) максимальное кол-во одновременно исполняемых задач
+    # param @private_cur_tasks - (array) исполняемые задачи
+
     @self = array()
     @self['private_tasks'] = array()
     @self['private_id'] = @id

@@ -35,10 +35,9 @@ proc _util_interval(number @interval) {
     }
     @timer_info = import('__util_id_timer')
     @name = @timer_info['id'].'-'.@timer_info['count']
+    @timer_info['count']++
     if (@timer_info['count'] == 9223372036854775807) {
         @timer_info['count'] = 0
-    } else {
-        @timer_info['count']++
     }
     x_new_tracked_thread(@name, closure() {
         try {
@@ -151,6 +150,18 @@ proc _util_array_or(@arr1, @arr2) {
     }
     array_push_all(@result, @carr2)
     return(@result)
+}
+
+proc _util_array_some_contains(array @arr1, array @arr2) {
+    if (is_associative(@arr1)) {
+        throw(CastException, 'arr1 must be not associative array')
+    } else if (is_associative(@arr2)) {
+        throw(CastException, 'arr2 must be not associative array')
+    }
+    foreach(@val in @arr2) {
+        if (array_contains(@arr1, @val), return(true))
+    }
+    return(false)
 }
 
 proc _util_array_minus(@arr1, @arr2) {

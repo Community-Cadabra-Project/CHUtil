@@ -30,6 +30,7 @@
                 @task = @cur_tasks[@i]
                 if (!tracked_thread_is_alive(@task)) {
                     @self['private_number']++
+                    @self['private_complited']++
                     array_remove(@cur_tasks, @i)
                     @i--;
                 }
@@ -45,6 +46,7 @@
                 continue()
             }
             while (array_size(@self['private_tasks']) == 0) {
+                if (@self['private_final_n'] != @number, continue())
                 try {
                     x_sleep(@self['private_delay'])
                 } catch(InterruptedException @e) {
@@ -91,10 +93,22 @@
     return(@self['private_is_run'])
 }
 
+@__util_methods_task_ex['size_waiting'] = closure(@self) {
+    return(array_size(@self['private_tasks']))
+}
+
+@__util_methods_task_ex['size_running'] = closure(@self) {
+    return(array_size(@self['private_cur_tasks']))
+}
+
+@__util_methods_task_ex['complited'] = closure(@self) {
+    return(@self['private_complited'])
+}
+
 # FIELDS
 ########################################################################################
 
-@util_new_task_ex_object = closure(@id, @number, @delay, boolean @start) {
+@util_new_task_ex_object = closure(string @id, int @number, int @delay, boolean @start) {
 
     # param @private_tasks  - (array) задачи, ожидающие своего выполнения (очередь)
     # param @private_id     - (string) название потока, запускающего задачи
@@ -103,6 +117,7 @@
     # param @private_is_run - (boolean) true если поток исполнения запущен, иначе false
     # param @private_number - (int) максимальное кол-во одновременно исполняемых задач
     # param @private_cur_tasks - (array) исполняемые задачи
+    # param @private_complited - (int) кол-воа завершенных задач
 
     @self = array()
     @self['private_tasks'] = array()
@@ -111,7 +126,9 @@
     @self['private_delay'] = @delay
     @self['private_is_run'] = @start
     @self['private_number'] = @number
+    @self['private_final_n'] = @number
     @self['private_cur_tasks'] = array()
+    @self['private_complited'] = 0
 
     foreach(@key: @value in @__util_methods_task_ex) {
         @self[@key] = @value

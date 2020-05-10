@@ -1,66 +1,66 @@
 # METHODS
 ########################################################################################
-@__util_methods_properties = array()
+@__util_properties_methods = array()
 
-@__util_methods_properties['private_add_link'] = closure(@self, @key) {
+@__util_properties_methods['private_add_link'] = closure(@self, @key) {
     @self['private_link'][@key] = @self['private_count']
     @self['private_count']++
 }
-@__util_methods_properties['get_string'] = closure(@self, @key) {
+@__util_properties_methods['get_string'] = closure(@self, @key) {
     return(@self['private_store'][@key])
 }
-@__util_methods_properties['get_array'] = closure(@self, @key) {
+@__util_properties_methods['get_array'] = closure(@self, @key) {
     return(array_get(@self['private_store'][@key]))
 }
-@__util_methods_properties['get_int'] = closure(@self, @key) {
+@__util_properties_methods['get_int'] = closure(@self, @key) {
     return(integer(@self['private_store'][@key]))
 }
-@__util_methods_properties['get_bool'] = closure(@self, @key) {
+@__util_properties_methods['get_bool'] = closure(@self, @key) {
     return(boolean((@self['private_store'][@key])))
 }
-@__util_methods_properties['push'] = closure(@self, @key, @value) {
+@__util_properties_methods['push'] = closure(@self, @key, @value) {
     _method1(@self, 'private_add_link', @key)
     @self['private_store'][@key] = @value
 }
-@__util_methods_properties["add_all"] = closure(@self, @map) {
+@__util_properties_methods["add_all"] = closure(@self, @map) {
     foreach(@key: @value in @map) {
         _method1(@self, 'push', @key)
     }
 }
-@__util_methods_properties['contains'] = closure(@self, @key) {
+@__util_properties_methods['contains'] = closure(@self, @key) {
     return(boolean(array_index_exists(@self['private_store'], @key)))
 }
-@__util_methods_properties['key_set'] = closure(@self) {
+@__util_properties_methods['key_set'] = closure(@self) {
     return(array_keys(@self['private_store']))
 }
-@__util_methods_properties['values'] = closure(@self) {
+@__util_properties_methods['values'] = closure(@self) {
     @values = array()
     array_push_all(@values, @store['private_store'])
     return(@values)
 }
-@__util_methods_properties['to_map'] = closure(@self) {
+@__util_properties_methods['to_map'] = closure(@self) {
     return(@self['private_store'][])
 }
-@__util_methods_properties['remove_all'] = closure(@self, @key_set) {
+@__util_properties_methods['remove_all'] = closure(@self, @key_set) {
     foreach(@key in @key_set) {
         _method1(@self, 'remove', @key)
     }
 }
-@__util_methods_properties['remove'] = closure(@self, @key) {
+@__util_properties_methods['remove'] = closure(@self, @key) {
     @temp = @self['private_store'][@key]
     array_remove(@self['private_store'], @key)
     array_remove(@self['private_link'], @key)
     return(@temp)
 }
-@__util_methods_properties['clear'] = closure(@self, @key) {
+@__util_properties_methods['clear'] = closure(@self, @key) {
     @self['private_count'] = 0
     @self['private_store'] = array()
     @self['private_link'] = array()
 }
-@__util_methods_properties['is_empty'] = closure(@self) {
+@__util_properties_methods['is_empty'] = closure(@self) {
     return(array_size(array_keys(@self['private_store'])) == 0)
 }
-@__util_methods_properties['parse_string'] = closure(@self, @text) {
+@__util_properties_methods['parse_string'] = closure(@self, @text) {
     @entries = split("\n", @text)
     for(@i = 0, @i < array_size(@entries), @i++) {
         if (trim(@entries[@i]) == "", continue())
@@ -74,7 +74,7 @@
         _method2(@self, 'push', @key, @value)
     }
 }
-@__util_methods_properties['to_string'] = closure(@self) {
+@__util_properties_methods['to_string'] = closure(@self) {
     if (_method(@self, 'is_empty'), return(""))
     @builder = res_create_resource('STRING_BUILDER')
     @store = array()
@@ -94,7 +94,7 @@
 ########################################################################################
 
 
-@util_new_properties_object = closure() {
+@util_properties_new_object = closure() {
     @self = array()
 
     # param @private_count - счетчик добавление аргументов, необходим для сортировки
@@ -105,7 +105,7 @@
     @self['private_store'] = array()
     @self['private_link'] = array()
 
-    foreach(@key: @value in @__util_methods_properties) {
+    foreach(@key: @value in @__util_properties_methods) {
         @self[@key] = @value
     }
 

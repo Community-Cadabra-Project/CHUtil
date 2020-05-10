@@ -1,19 +1,19 @@
 # METHODS
 ########################################################################################
-@__util_methods_task_ex = array()
+@__util_task_ex_methods = array()
 
-@__util_methods_task_ex['add'] = closure(@self, closure @lymda) {
+@__util_task_ex_methods['add'] = closure(@self, closure @lymda) {
     array_push(@self['private_tasks'], @lymda)
 }
 
-@__util_methods_task_ex['private_pull'] = closure(@self) {
+@__util_task_ex_methods['private_pull'] = closure(@self) {
     @index = array_size(@self['private_tasks']) - 1
     @pull = @self['private_tasks'][@index]
     array_remove(@self['private_tasks'], @index)
     return(@pull)
 }
 
-@__util_methods_task_ex['start'] = closure(@self) {
+@__util_task_ex_methods['start'] = closure(@self) {
     if (@self['private_is_run']) {
         return()
     } else {
@@ -22,7 +22,7 @@
     }
 }
 
-@__util_methods_task_ex['private_run'] = closure(@self) {
+@__util_task_ex_methods['private_run'] = closure(@self) {
     @runnable = closure() {
         @cur_tasks = @self['private_cur_tasks']
         while(true) {
@@ -73,7 +73,7 @@
     x_new_tracked_thread(@self['private_id'], @runnable)
 }
 
-@__util_methods_task_ex['interrupt'] = closure(@self) {
+@__util_task_ex_methods['interrupt'] = closure(@self) {
     x_tracked_thread_interrupt(@self['private_id'])
     while(tracked_thread_is_alive(@self['private_id'])) {}
     foreach(@task in @self['private_cur_tasks']) {
@@ -81,7 +81,7 @@
     }
 }
 
-@__util_methods_task_ex['stop'] = closure(@self) {
+@__util_task_ex_methods['stop'] = closure(@self) {
     x_tracked_thread_interrupt(@self['private_id'])
     while(tracked_thread_is_alive(@self['private_id'])) {}
     foreach(@task in @self['private_cur_tasks']) {
@@ -89,26 +89,26 @@
     }
 }
 
-@__util_methods_task_ex['is_run'] = closure(@self) {
+@__util_task_ex_methods['is_run'] = closure(@self) {
     return(@self['private_is_run'])
 }
 
-@__util_methods_task_ex['size_waiting'] = closure(@self) {
+@__util_task_ex_methods['size_waiting'] = closure(@self) {
     return(array_size(@self['private_tasks']))
 }
 
-@__util_methods_task_ex['size_running'] = closure(@self) {
+@__util_task_ex_methods['size_running'] = closure(@self) {
     return(array_size(@self['private_cur_tasks']))
 }
 
-@__util_methods_task_ex['complited'] = closure(@self) {
+@__util_task_ex_methods['complited'] = closure(@self) {
     return(@self['private_complited'])
 }
 
 # FIELDS
 ########################################################################################
 
-@util_new_task_ex_object = closure(string @id, int @number, int @delay, boolean @start) {
+@util_task_ex_new_object = closure(string @id, int @number, int @delay, boolean @start) {
 
     # param @private_tasks  - (array) задачи, ожидающие своего выполнения (очередь)
     # param @private_id     - (string) название потока, запускающего задачи
@@ -130,7 +130,7 @@
     @self['private_cur_tasks'] = array()
     @self['private_complited'] = 0
 
-    foreach(@key: @value in @__util_methods_task_ex) {
+    foreach(@key: @value in @__util_task_ex_methods) {
         @self[@key] = @value
     }
 

@@ -142,6 +142,6 @@ proc _util_task_ex_init_self(@id, @number, @delay, boolean @start) {
 
 
 if (import('script_log')) {
-    console('CHUtil: task_ex_class.ms loaded')
+    console('MSUtil: task_ex_class.ms loaded', false)
 }
 

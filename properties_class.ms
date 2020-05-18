@@ -113,6 +113,6 @@
 }
 
 if (import('script_log')) {
-    console('CHUtil: properties_class.ms loaded')
+    console('MSUtil: properties_class.ms loaded', false)
 }
 

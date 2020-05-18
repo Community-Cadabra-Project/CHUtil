@@ -38,5 +38,5 @@ proc _unit_commander_is_register(@self, @key) {
 }
 
 if (import('script_log')) {
-    console('CHUtil: commander_api.ms loaded')
+    console('MSUtil: commander_api.ms loaded', false)
 }

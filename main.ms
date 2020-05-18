@@ -32,5 +32,5 @@ include('task_ex_api.ms')
 
 
 if (import('module_log')) {
-    console('CHUtil loaded')
+    console('MSUtil loaded', false)
 }

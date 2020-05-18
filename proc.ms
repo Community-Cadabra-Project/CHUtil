@@ -178,7 +178,7 @@ proc _util_array_minus(@arr1, @arr2) {
 }
 
 if (import('script_log')) {
-    console('CHUtil: proc.ms loaded')
+    console('MSUtil: proc.ms loaded', false)
 }
 
 proc _util_get_cur_thread() {

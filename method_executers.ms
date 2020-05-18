@@ -100,5 +100,5 @@ proc _method16(@self, @key, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @
 }
 
 if (import('script_log')) {
-    console('CHUtil: method_executers.ms loaded')
+    console('MSUtil: method_executers.ms loaded', false)
 }

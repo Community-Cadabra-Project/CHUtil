@@ -43,6 +43,6 @@
 ########################################################################################
 
 if (import('script_log')) {
-    console('CHUtil: commander_class.ms loaded')
+    console('MSUtil: commander_class.ms loaded', false)
 }
 

@@ -142,6 +142,6 @@
 
 
 if (import('script_log')) {
-    console('CHUtil: task_ex_class.ms loaded')
+    console('MSUtil: task_ex_class.ms loaded', false)
 }
 

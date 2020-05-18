@@ -120,5 +120,5 @@ proc _util_properties_to_string(@self) {
 
 
 if (import('script_log')) {
-    console('CHUtil: properties_api.ms loaded')
+    console('MSUtil: properties_api.ms loaded', false)
 }

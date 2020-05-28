@@ -64,7 +64,7 @@ proc _util_clear_interval() {
     }
 }
 
-proc _util_split_arg(@arg, @pref) {
+proc _util_split_arg(string @arg, string @pref) {
     @args = split(" ", @arg)
     @len = length(@args)
     @len_pref = length(@pref)
@@ -110,7 +110,7 @@ proc _util_entries_to_assoc(array @array) {
     return(@map)
 }
 
-proc _util_get_all_scripts(@path) {
+proc _util_get_all_scripts(string @path) {
     @files = array()
     @list_files = list_files(@path)
     foreach(@file in @list_files) {
@@ -123,7 +123,20 @@ proc _util_get_all_scripts(@path) {
     return(@files)
 }
 
-proc _util_arrays_and(@arr1, @arr2) {
+proc _util_get_all_files(string @path) {
+    @files = array()
+    @list_files = list_files(@path)
+     foreach(@file in @list_files) {
+        if (string_contains(@file, '.')) {
+            array_push(@files, @path.'\\'.@file)
+        } else {
+            array_push_all(@files, _util_get_all_files(@path.'\\'.@file))
+        }
+    }
+    return(@files)
+}
+
+proc _util_arrays_and(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
     } else if (is_associative(@arr2)) {
@@ -136,7 +149,7 @@ proc _util_arrays_and(@arr1, @arr2) {
     return(@result)
 }
 
-proc _util_array_or(@arr1, @arr2) {
+proc _util_array_or(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
     } else if (is_associative(@arr2)) {
@@ -164,7 +177,7 @@ proc _util_array_some_contains(array @arr1, array @arr2) {
     return(false)
 }
 
-proc _util_array_minus(@arr1, @arr2) {
+proc _util_array_minus(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
     } else if (is_associative(@arr2)) {
@@ -177,10 +190,15 @@ proc _util_array_minus(@arr1, @arr2) {
     return(@result)
 }
 
-if (import('script_log')) {
-    console('MSUtil: proc.ms loaded', false)
+proc _util_error(string @msg) {
+    console(@msg, false)
+    die()
 }
 
 proc _util_get_cur_thread() {
     return(x_get_current_thread()[16..])
+}
+
+if (import('script_log')) {
+    console('MSUtil: proc.ms loaded', false)
 }

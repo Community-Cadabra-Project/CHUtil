@@ -11,6 +11,10 @@ Patterns:
         - commander_api.ms
         - commander_class.ms
 
+Logging:
+    Messager:
+        - msg.ms
+
 Usefull procedurs:
     - proc.ms
     - method_executers.ms
@@ -22,6 +26,7 @@ MultiProgramming:
 */
 
 include('proc.ms')
+include('msg.ms')
 include('method_executers.ms')
 include('properties_api.ms')
 include('properties_class.ms')

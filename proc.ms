@@ -136,6 +136,21 @@ proc _util_get_all_files(string @path) {
     return(@files)
 }
 
+proc _util_make_dir(string @path) {
+    @files = split('\\', @path)
+    @size = array_size(@files)
+    for(@i = 0, @i < @size, @i++) {
+        @sub_path = array_implode(@files[cslice(0, @i)])
+        if (!file_exists(@sub_path)) {
+            if (@i != @size - 1) {
+                create_dir(@sub_path)
+            } else {
+                create_file(@sub_path)
+            }
+        }
+    }
+}
+
 proc _util_arrays_and(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
@@ -188,6 +203,28 @@ proc _util_array_minus(array @arr1, array @arr2) {
         if (!array_contains(@arr2, @val), array_push(@result, @val))
     }
     return(@result)
+}
+
+string proc _util_parse_stack_trace(int @stack = 1, array @traces = get_stack_trace()) {
+    @traces = @traces[cslice(@stack, -1)]
+    @builder = res_create_resource('STRING_BUILDER')
+    @size = array_size(@traces)
+    for(@i = 0, @i < @size, @i++) {
+        @trace = @traces[@i]
+        string_append(@builder, @self['private_tab'])
+        string_append(@builder, 'at ')
+        string_append(@builder, @trace['id'])
+        string_append(@builder, ':')
+        string_append(@builder, @trace['file'])
+        string_append(@builder, ':')
+        string_append(@builder, @trace['line'])
+        string_append(@builder, '.')
+        string_append(@builder, @trace['col'])
+        if (@i + 1 != @size) {
+            string_append(@builder, '\n')
+        }
+    }
+    return(string(@builder))
 }
 
 proc _util_error(string @msg) {

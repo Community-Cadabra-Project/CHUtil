@@ -14,6 +14,8 @@ Patterns:
 Logging:
     Messager:
         - msg.ms
+    Logger:
+        - log.ms
 
 Usefull procedurs:
     - proc.ms
@@ -27,6 +29,7 @@ MultiProgramming:
 
 include('proc.ms')
 include('msg.ms')
+include('log.ms')
 include('method_executers.ms')
 include('properties_api.ms')
 include('properties_class.ms')

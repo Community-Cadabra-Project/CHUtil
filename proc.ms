@@ -205,13 +205,12 @@ proc _util_array_minus(array @arr1, array @arr2) {
     return(@result)
 }
 
-string proc _util_parse_stack_trace(int @stack = 1, array @traces = get_stack_trace()) {
-    @traces = @traces[cslice(@stack, -1)]
+string proc _util_parse_stack_trace(int @start = 1, array @traces = get_stack_trace(), int @end = -1) {
+    @traces = @traces[cslice(@start, @end)]
     @builder = res_create_resource('STRING_BUILDER')
     @size = array_size(@traces)
     for(@i = 0, @i < @size, @i++) {
         @trace = @traces[@i]
-        string_append(@builder, @self['private_tab'])
         string_append(@builder, 'at ')
         string_append(@builder, @trace['id'])
         string_append(@builder, ':')

@@ -6,7 +6,7 @@ array proc _private_util_log_import() {
     return(import(_private_util_log_name()))
 }
 
-void proc _util_log_register(string @key, string @prefix = '', array @outs = array(closure(@msg) {console(@msg, false)}), array @types = _private_util_log_import()['enum']) {
+void proc _util_log_register(string @key, string @prefix = '', array @outs = array(closure(@msg) {console(@msg, false)}), array @types = array('FATAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG')) {
     @log = array()
     @log['prefix'] = @prefix
     @log['outs'] = @outs

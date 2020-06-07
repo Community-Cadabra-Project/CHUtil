@@ -136,19 +136,19 @@ proc _util_get_all_files(string @path) {
     return(@files)
 }
 
-proc _util_make_dir(string @path) {
-    @files = split('\\', @path)
-    @size = array_size(@files)
-    for(@i = 0, @i < @size, @i++) {
-        @sub_path = array_implode(@files[cslice(0, @i)])
-        if (!file_exists(@sub_path)) {
-            if (@i != @size - 1) {
-                create_dir(@sub_path)
-            } else {
-                create_file(@sub_path)
-            }
-        }
+proc _util_make_dir(string @path, string @split = '\\') {
+    if (file_exists(@path)) {
+        return()
     }
+    @folders = split(@split, @path)
+	@sub_path = ''
+	for(@i = 0, @i < array_size(@folders) - 1, @i++){
+		@sub_path .= @folders[@i].@split
+		if(!file_exists(@sub_path)){
+			create_dir(@sub_path)
+		}
+	}
+	create_file(@path)
 }
 
 proc _util_arrays_and(array @arr1, array @arr2) {

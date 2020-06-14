@@ -1,5 +1,9 @@
 # COMMAND HELPER UTIL scripts
 
+To include the module, use ```include_dir('util', false)```.
+
+For tests of MSUnit \[msutil\] call procadure ```_util_init_module```.
+
 1. Serialization:
 
     *.properties

@@ -3,7 +3,7 @@ export(
     array('id' : '(Util Timer)', 'count' : 0)
 )
 
-proc _util_interval(number @interval) {
+string proc _util_interval(number @interval) {
     int @delay = 0
     closure @lymda
     @size = array_size(@arguments)
@@ -53,7 +53,7 @@ proc _util_interval(number @interval) {
     return(@name)
 }
 
-proc _util_clear_interval() {
+void proc _util_clear_interval() {
     if (array_size(@arguments) == 0) {
         @cur_name = _util_get_cur_thread()
         if (string_contains(@cur_name, import('__util_id_timer')['id'])) {
@@ -64,7 +64,7 @@ proc _util_clear_interval() {
     }
 }
 
-proc _util_split_arg(string @arg, string @pref) {
+array proc _util_split_arg(string @arg, string @pref) {
     @args = split(" ", @arg)
     @len = length(@args)
     @len_pref = length(@pref)
@@ -88,13 +88,11 @@ proc _util_split_arg(string @arg, string @pref) {
     return(@model)
 }
 
-proc _util_sort_entries(array @array, @comp=closure(@l, @r){return(@l[0] > @r[0])}) {
-    @temp_array = _unit_associative_to_entries(@array)
-    array_sort(@temp_array, @comp)
-    return(@temp_array)
+void proc _util_sort_entries(array @array, @comp=closure(@l, @r){return(@l[0] > @r[0])}) {
+    array_sort(@array, @comp)
 }
 
-proc _util_assoc_to_entries(array @array) {
+array proc _util_assoc_to_entries(array @array) {
     array @new_array = array()
     foreach(@key: @value in @array) {
         array_push(@new_array, array(@key, @value))
@@ -102,7 +100,7 @@ proc _util_assoc_to_entries(array @array) {
     return(@new_array)
 }
 
-proc _util_entries_to_assoc(array @array) {
+array proc _util_entries_to_assoc(array @array) {
     array @map = array()
     foreach(@entry in @array) {
         @map[@entry[0]] = @entry[1]
@@ -110,7 +108,7 @@ proc _util_entries_to_assoc(array @array) {
     return(@map)
 }
 
-proc _util_get_all_scripts(string @path) {
+array proc _util_get_all_scripts(string @path) {
     @files = array()
     @list_files = list_files(@path)
     foreach(@file in @list_files) {
@@ -123,7 +121,7 @@ proc _util_get_all_scripts(string @path) {
     return(@files)
 }
 
-proc _util_get_all_files(string @path) {
+array proc _util_get_all_files(string @path) {
     @files = array()
     @list_files = list_files(@path)
      foreach(@file in @list_files) {
@@ -136,13 +134,19 @@ proc _util_get_all_files(string @path) {
     return(@files)
 }
 
-proc _util_make_dir(string @path, string @split = '\\') {
+void proc _util_make_file(string @path, string @split = '\\', int @ignore = 0) {
     if (file_exists(@path)) {
         return()
     }
     @folders = split(@split, @path)
-	@sub_path = ''
-	for(@i = 0, @i < array_size(@folders) - 1, @i++){
+
+    if (@ignore > 0) {
+        @sub_path = array_implode(@folders[cslice(0, @ignore)], @split).@split
+    } else {
+        @sub_path = @folders[0].@split
+    }
+	
+	for(@i = @ignore+1, @i < array_size(@folders) - 1, @i++){
 		@sub_path .= @folders[@i].@split
 		if(!file_exists(@sub_path)){
 			create_dir(@sub_path)
@@ -151,7 +155,7 @@ proc _util_make_dir(string @path, string @split = '\\') {
 	create_file(@path)
 }
 
-proc _util_arrays_and(array @arr1, array @arr2) {
+array proc _util_array_and(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
     } else if (is_associative(@arr2)) {
@@ -164,7 +168,7 @@ proc _util_arrays_and(array @arr1, array @arr2) {
     return(@result)
 }
 
-proc _util_array_or(array @arr1, array @arr2) {
+array proc _util_array_or(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
     } else if (is_associative(@arr2)) {
@@ -180,7 +184,7 @@ proc _util_array_or(array @arr1, array @arr2) {
     return(@result)
 }
 
-proc _util_array_some_contains(array @arr1, array @arr2) {
+boolean proc _util_array_some_contains(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
     } else if (is_associative(@arr2)) {
@@ -192,7 +196,7 @@ proc _util_array_some_contains(array @arr1, array @arr2) {
     return(false)
 }
 
-proc _util_array_minus(array @arr1, array @arr2) {
+array proc _util_array_minus(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
     } else if (is_associative(@arr2)) {
@@ -226,15 +230,11 @@ string proc _util_parse_stack_trace(int @start = 1, array @traces = get_stack_tr
     return(string(@builder))
 }
 
-proc _util_error(string @msg) {
+void proc _util_error(string @msg) {
     console(@msg, false)
     die()
 }
 
-proc _util_get_cur_thread() {
+string proc _util_get_cur_thread() {
     return(x_get_current_thread()[16..])
-}
-
-if (import('script_log')) {
-    console('MSUtil: proc.ms loaded', false)
 }

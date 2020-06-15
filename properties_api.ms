@@ -54,7 +54,7 @@ proc _util_properties_key_set(@self) {
 
 proc _util_properties_values(@self) {
     @values = array()
-    array_push_all(@values, @store['private_store'])
+    array_push_all(@values, @self['private_store'])
     return(@values)
 }
 

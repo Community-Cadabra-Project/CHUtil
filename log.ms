@@ -1,9 +1,5 @@
-string proc _private_util_log_name() {
-    return('__UTIL_LOGS')
-}
-
 array proc _private_util_log_import() {
-    return(import(_private_util_log_name()))
+    return(import('org.cadabra.msutil.log'))
 }
 
 void proc _util_log_register(string @key, string @prefix = '', array @outs = array(closure(@msg) {console(@msg, false)}), array @types = array('FATAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG')) {
@@ -28,8 +24,7 @@ void proc _util_log(string @key, string @type, string @msg) {
     }
 }
 
-export(_private_util_log_name(), array(
-        objects: array(),
-        enum: array('FATAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG')
+export('org.cadabra.msutil.log', array(
+        objects: array()
     )
 )

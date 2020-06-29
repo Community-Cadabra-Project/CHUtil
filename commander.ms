@@ -22,6 +22,9 @@ proc _util_commander_unregister(@self, @key) {
 }
 
 proc _util_commander_execute(@self, @key) {
+    if (!array_index_exists(@self['private_commands'], @key)) {
+        throw(IllegalArgumentException, "Command '@key' not registered!")
+    }
     if (array_size(@arguments) > 2) {
         return(execute(@arguments[2..], @self['private_commands'][@key]))
     } else {
@@ -35,8 +38,4 @@ proc _util_commander_clear(@self) {
 
 proc _unit_commander_is_register(@self, @key) {
     return(array_index_exists(@self['private_commands'], @key))
-}
-
-if (import('script_log')) {
-    console('MSUtil: commander_api.ms loaded', false)
 }

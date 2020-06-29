@@ -97,7 +97,3 @@ proc _method16(@self, @key, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @
     }
     return(execute(@self, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @self[@key]))
 }
-
-if (import('script_log')) {
-    console('MSUtil: method_executers.ms loaded', false)
-}

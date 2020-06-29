@@ -1,28 +1,24 @@
-# METHODS
-########################################################################################
-@__util_methods_task_ex = array()
-
-proc _util_task_ex_add(@self, closure @lymda) {
+proc _util_tasker_add(@self, closure @lymda) {
     array_push(@self['private_tasks'], @lymda)
 }
 
-proc _util_private_task_ex_pull(@self) {
+proc _util_private_tasker_pull(@self) {
     @index = array_size(@self['private_tasks']) - 1
     @pull = @self['private_tasks'][@index]
     array_remove(@self['private_tasks'], @index)
     return(@pull)
 }
 
-proc _util_task_ex_start(@self) {
+proc _util_tasker_start(@self) {
     if (@self['private_is_run']) {
         return()
     } else {
         @self['private_is_run'] = true
-        _util_private_task_ex_run(@self)
+        _util_private_tasker_run(@self)
     }
 }
 
-proc _util_private_task_ex_run(@self) {
+proc _util_private_tasker_run(@self) {
     @runnable = closure() {
         @cur_tasks = @self['private_cur_tasks']
         while(true) {
@@ -60,7 +56,7 @@ proc _util_private_task_ex_run(@self) {
             @n = min(@self['private_number'], array_size(@self['private_tasks']))
             for(@i = 0, @i < @n, @i++) {
                 if(is_interrupted(), return())
-                @new_task = _util_private_task_ex_pull(@self)
+                @new_task = _util_private_tasker_pull(@self)
 
                 @id = @self['private_id'].'-'.@self['private_count']
                 x_new_tracked_thread(@id, closure() {
@@ -77,7 +73,7 @@ proc _util_private_task_ex_run(@self) {
     x_new_tracked_thread(@self['private_id'], @runnable)
 }
 
-proc _util_task_ex_interrupt(@self) {
+proc _util_tasker_interrupt(@self) {
     x_tracked_thread_interrupt(@self['private_id'])
     while(tracked_thread_is_alive(@self['private_id'])) {}
     foreach(@task in @self['private_cur_tasks']) {
@@ -85,7 +81,7 @@ proc _util_task_ex_interrupt(@self) {
     }
 }
 
-proc _util_task_ex_stop(@self) {
+proc _util_tasker_stop(@self) {
     x_tracked_thread_interrupt(@self['private_id'])
     while(tracked_thread_is_alive(@self['private_id'])) {}
     foreach(@task in @self['private_cur_tasks']) {
@@ -93,26 +89,23 @@ proc _util_task_ex_stop(@self) {
     }
 }
 
-proc _util_task_ex_is_run(@self) {
+proc _util_tasker_is_run(@self) {
     return(@self['private_is_run'])
 }
 
-proc _util_task_ex_size_waiting(@self) {
+proc _util_tasker_size_waiting(@self) {
     return(array_size(@self['private_tasks']))
 }
 
-proc _util_task_ex_size_running(@self) {
+proc _util_tasker_size_running(@self) {
     return(array_size(@self['private_cur_tasks']))
 }
 
-proc _util_task_ex_complited(@self) {
+proc _util_tasker_complited(@self) {
     return(@self['private_complited'])
 }
 
-# FIELDS
-########################################################################################
-
-proc _util_task_ex_init_self(@id, @number, @delay, boolean @start) {
+proc _util_tasker_init_self(@id, @number, @delay, boolean @start) {
 
     # param @private_tasks  - (array) задачи, ожидающие своего выполнения (очередь)
     # param @private_id     - (string) название потока, запускающего задачи
@@ -135,13 +128,7 @@ proc _util_task_ex_init_self(@id, @number, @delay, boolean @start) {
     @self['private_complited'] = 0
 
     if (@start) {
-        _util_private_task_ex_run(@self)
+        _util_private_tasker_run(@self)
     }
     return(@self)
 }
-
-
-if (import('script_log')) {
-    console('MSUtil: task_ex_class.ms loaded', false)
-}
-

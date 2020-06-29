@@ -117,8 +117,3 @@ proc _util_properties_to_string(@self) {
     string_append(@builder, @store[-1][0], '=', @store[-1][1])
     return(string(@builder))
 }
-
-
-if (import('script_log')) {
-    console('MSUtil: properties_api.ms loaded', false)
-}

@@ -39,7 +39,7 @@ string proc _util_interval(number @interval) {
     if (@timer_info['count'] == 9223372036854775807) {
         @timer_info['count'] = 0
     }
-    x_new_tracked_thread(@name, closure() {
+    x_tracked_new_thread(@name, closure() {
         try {
             x_sleep(@delay)
             while(true) {
@@ -53,13 +53,6 @@ string proc _util_interval(number @interval) {
     return(@name)
 }
 
-void proc _util_clear_interval() {
-    if (array_size(@arguments) == 0) {
-        @cur_name = _util_get_cur_thread()
-        if (string_contains(@cur_name, import('org.cadabra.msutil.interval')['id'])) {
-            x_tracked_thread_interrupt(@cur_name)
-        }
-    } else {
-        x_tracked_thread_interrupt(@arguments[0])
-    }
+void proc _util_clear_interval(@id) {
+    x_interrupt(@id)
 }

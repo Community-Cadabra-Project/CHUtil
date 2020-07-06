@@ -1,4 +1,4 @@
-proc _unit_test_split_args() {
+proc _test_split_args() {
     @example = '-update 1 2 3 -run 3 4 5 -start 5 6'
     @res = _util_entries_to_assoc(_util_split_arg(@example, '-'))
     _assert_key_exist('update', @res)
@@ -9,7 +9,7 @@ proc _unit_test_split_args() {
     _assert_equals(@res['start'], array('5', '6'))
 }
 
-proc _unit_test_entries() {
+proc _test_entries() {
     @example1 = array(
         array(4, 1),
         array(3, 2),
@@ -31,7 +31,7 @@ proc _unit_test_entries() {
     )
 }
 
-proc _unit_test_arrays_math() {
+proc _test_arrays_math() {
     _assert_closure_throw(
         'ms.lang.CastException',
         closure() {

@@ -24,7 +24,7 @@ proc _util_private_tasker_run(@self) {
         while(true) {
             for(@i = 0, @i < array_size(@cur_tasks), @i++) {
                 @task = @cur_tasks[@i]
-                if (!tracked_thread_is_alive(@task)) {
+                if (!x_thread_is_alive(@task)) {
                     @self['private_number']++
                     @self['private_complited']++
                     array_remove(@cur_tasks, @i)
@@ -55,14 +55,12 @@ proc _util_private_tasker_run(@self) {
             if (@bool_cont, continue())
             @n = min(@self['private_number'], array_size(@self['private_tasks']))
             for(@i = 0, @i < @n, @i++) {
-                if(is_interrupted(), return())
+                if(x_is_interrupted(), return())
                 @new_task = _util_private_tasker_pull(@self)
-
                 @id = @self['private_id'].'-'.@self['private_count']
-                x_new_tracked_thread(@id, closure() {
+                x_tracked_new_thread(@id, closure() {
                     execute(@new_task)
                 })
-
                 @self['private_number']--
                 @self['private_count']++
                 if (@self['private_count'] == 9223372036854775807, @self['private_count'] == 0)
@@ -70,27 +68,27 @@ proc _util_private_tasker_run(@self) {
             }
         }
     }
-    x_new_tracked_thread(@self['private_id'], @runnable)
+    x_tracked_new_thread(@self['private_id'], @runnable)
 }
 
 proc _util_tasker_interrupt(@self) {
-    x_tracked_thread_interrupt(@self['private_id'])
-    while(tracked_thread_is_alive(@self['private_id'])) {}
+    x_interrupt(@self['private_id'])
+    x_tracked_thread_join(@self['private_id'])
     foreach(@task in @self['private_cur_tasks']) {
-        x_tracked_thread_interrupt(@task)
+        x_interrupt(@task)
     }
 }
 
 proc _util_tasker_stop(@self) {
-    x_tracked_thread_interrupt(@self['private_id'])
-    while(tracked_thread_is_alive(@self['private_id'])) {}
+    x_interrupt(@self['private_id'])
+    x_tracked_thread_join(@self['private_id'])
     foreach(@task in @self['private_cur_tasks']) {
-        x_stop_tracked_thread(@task)
+        x_stop_thread(@task)
     }
 }
 
 proc _util_tasker_is_run(@self) {
-    return(@self['private_is_run'])
+    return(x_thread_is_alive(@self['private_id']))
 }
 
 proc _util_tasker_size_waiting(@self) {

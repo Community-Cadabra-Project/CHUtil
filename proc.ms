@@ -143,9 +143,18 @@ array proc _util_array_minus(array @arr1, array @arr2) {
     return(@result)
 }
 
-string proc _util_parse_stack_trace(int @start = 1, array @traces = get_stack_trace(), int @end = -1) {
-    @traces = @traces[cslice(@start, @end)]
+string proc _util_parse_exception(array @e) {
     @builder = res_create_resource('STRING_BUILDER')
+    string_append(@builder, @e['classType'])
+    string_append(@builder, ': ')
+    string_append(@builder, @e['message'])
+    string_append(@builder, '\n')
+    _util_parse_stack_trace(1, @e['stackTrace'], -1, @builder)
+    return(string(@builder))
+}
+
+string proc _util_parse_stack_trace(int @start = 1, array @traces = get_stack_trace(), int @end = -1, @builder = res_create_resource('STRING_BUILDER')) {
+    @traces = @traces[cslice(@start, @end)]
     @size = array_size(@traces)
     for(@i = 0, @i < @size, @i++) {
         @trace = @traces[@i]
@@ -161,7 +170,7 @@ string proc _util_parse_stack_trace(int @start = 1, array @traces = get_stack_tr
             string_append(@builder, '\n')
         }
     }
-    return(string(@builder))
+    return(@builder)
 }
 
 void proc _util_error(string @msg) {

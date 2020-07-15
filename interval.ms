@@ -39,12 +39,12 @@ string proc _util_interval(number @interval) {
     if (@timer_info['count'] == 9223372036854775807) {
         @timer_info['count'] = 0
     }
-    x_tracked_new_thread(@name, closure() {
+    x_new_thread(@name, closure() {
         try {
-            x_sleep(@delay)
+            sleep(@delay)
             while(true) {
                 execute(@lymda)
-                x_sleep(@interval)
+                sleep(@interval)
             }
         } catch(InterruptedException @e) {
             return()

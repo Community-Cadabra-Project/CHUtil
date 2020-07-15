@@ -34,7 +34,7 @@ proc _util_private_tasker_run(@self) {
             @number = @self['private_number']
             if (@number == 0) {
                 try {
-                    x_sleep(@self['private_delay'])
+                    sleep(@self['private_delay'])
                 } catch(InterruptedException @e) {
                     return()
                 }
@@ -43,7 +43,7 @@ proc _util_private_tasker_run(@self) {
             @bool_cont = false
             while (array_size(@self['private_tasks']) == 0) {
                 try {
-                    x_sleep(@self['private_delay'])
+                    sleep(@self['private_delay'])
                 } catch(InterruptedException @e) {
                     return()
                 }
@@ -58,7 +58,7 @@ proc _util_private_tasker_run(@self) {
                 if(x_is_interrupted(), return())
                 @new_task = _util_private_tasker_pull(@self)
                 @id = @self['private_id'].'-'.@self['private_count']
-                x_tracked_new_thread(@id, closure() {
+                x_new_thread(@id, closure() {
                     execute(@new_task)
                 })
                 @self['private_number']--
@@ -68,12 +68,12 @@ proc _util_private_tasker_run(@self) {
             }
         }
     }
-    x_tracked_new_thread(@self['private_id'], @runnable)
+    x_new_thread(@self['private_id'], @runnable)
 }
 
 proc _util_tasker_interrupt(@self) {
     x_interrupt(@self['private_id'])
-    x_tracked_thread_join(@self['private_id'])
+    x_thread_join(@self['private_id'])
     foreach(@task in @self['private_cur_tasks']) {
         x_interrupt(@task)
     }
@@ -81,7 +81,7 @@ proc _util_tasker_interrupt(@self) {
 
 proc _util_tasker_stop(@self) {
     x_interrupt(@self['private_id'])
-    x_tracked_thread_join(@self['private_id'])
+    x_thread_join(@self['private_id'])
     foreach(@task in @self['private_cur_tasks']) {
         x_stop_thread(@task)
     }

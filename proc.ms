@@ -148,12 +148,13 @@ string proc _util_parse_exception(array @e) {
     string_append(@builder, @e['classType'])
     string_append(@builder, ': ')
     string_append(@builder, @e['message'])
-    string_append(@builder, '\n')
-    _util_parse_stack_trace(1, @e['stackTrace'], -1, @builder)
+    if (@e['stackTrace'], string_append(@builder, '\n'))
+    _util_parse_stack_trace(0, @e['stackTrace'], -1, @builder)
     return(string(@builder))
 }
 
-string proc _util_parse_stack_trace(int @start = 1, array @traces = get_stack_trace(), int @end = -1, @builder = res_create_resource('STRING_BUILDER')) {
+resource proc _util_parse_stack_trace(int @start = 0, array @traces = get_stack_trace(), int @end = -1, @builder = res_create_resource('STRING_BUILDER')) {
+    if (!@traces, return(@builder))
     @traces = @traces[cslice(@start, @end)]
     @size = array_size(@traces)
     for(@i = 0, @i < @size, @i++) {

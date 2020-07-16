@@ -1,5 +1,5 @@
 proc _util_tasker_add(@self, closure @lymda) {
-    array_push(@self['private_tasks'], @lymda)
+    @self['private_tasks'][] = @lymda
 }
 
 proc _util_private_tasker_pull(@self) {
@@ -64,7 +64,7 @@ proc _util_private_tasker_run(@self) {
                 @self['private_number']--
                 @self['private_count']++
                 if (@self['private_count'] == 9223372036854775807, @self['private_count'] == 0)
-                array_push(@cur_tasks, @id)
+                @cur_tasks[] = @id
             }
         }
     }

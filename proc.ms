@@ -8,16 +8,16 @@ array proc _util_split_arg(string @arg, string @pref) {
     for(@i = 0, @i < @len, @i++) {
         if (@args[@i][0] == @pref) {
             if (!is_null(@key_arg)) {
-                array_push(@model, array(@key_arg[cslice(@len_pref, -1)], @sub_args))
+                @model[] = array(@key_arg[cslice(@len_pref, -1)], @sub_args)
                 @sub_args = array()
             }
             @key_arg = @args[@i]
         } else {
-            array_push(@sub_args, @args[@i])
+            @sub_args[] = @args[@i]
         }
     }
     if (!is_null(@key_arg)) {
-        array_push(@model, array(@key_arg[cslice(@len_pref, -1)], @sub_args))
+        @model[] = array(@key_arg[cslice(@len_pref, -1)], @sub_args)
     }
     return(@model)
 }
@@ -29,7 +29,7 @@ void proc _util_sort_entries(array @array, @comp=closure(@l, @r){return(@l[0] > 
 array proc _util_assoc_to_entries(array @array) {
     array @new_array = array()
     foreach(@key: @value in @array) {
-        array_push(@new_array, array(@key, @value))
+        @new_array[] = array(@key, @value)
     }
     return(@new_array)
 }
@@ -47,7 +47,7 @@ array proc _util_get_all_scripts(string @path) {
     @list_files = list_files(@path)
     foreach(@file in @list_files) {
         if (string_contains(@file, '.')) {
-            if (string_contains(@file, '.ms'), array_push(@files, @path.'\\'.@file))
+            if (string_contains(@file, '.ms'), @files[] = @path.'\\'.@file)
         } else {
             array_push_all(@files, _util_get_all_scripts(@path.'\\'.@file))
         }
@@ -60,7 +60,7 @@ array proc _util_get_all_files(string @path) {
     @list_files = list_files(@path)
      foreach(@file in @list_files) {
         if (string_contains(@file, '.')) {
-            array_push(@files, @path.'\\'.@file)
+            @files[] = @path.'\\'.@file
         } else {
             array_push_all(@files, _util_get_all_files(@path.'\\'.@file))
         }
@@ -97,7 +97,7 @@ array proc _util_array_and(array @arr1, array @arr2) {
     }
     @result = array()
     foreach(@val in @arr1) {
-        if (array_contains(@arr2, @val), array_push(@result, @val))
+        if (array_contains(@arr2, @val), @result[] = @val)
     }
     return(@result)
 }
@@ -112,7 +112,7 @@ array proc _util_array_or(array @arr1, array @arr2) {
     @carr2 = @arr2[]
     @result = array()
     foreach(@val in @arr1) {
-        if (!array_contains(@arr2, @val), array_push(@result, @val), array_remove(@arr2, @val))
+        if (!array_contains(@arr2, @val), @result[] = @val, array_remove(@arr2, @val))
     }
     array_push_all(@result, @carr2)
     return(@result)
@@ -138,7 +138,7 @@ array proc _util_array_minus(array @arr1, array @arr2) {
     }
     @result = array()
     foreach(@val in @arr1) {
-        if (!array_contains(@arr2, @val), array_push(@result, @val))
+        if (!array_contains(@arr2, @val), @result[] = @val)
     }
     return(@result)
 }

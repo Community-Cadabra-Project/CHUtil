@@ -105,7 +105,7 @@ proc _util_properties_to_string(@self) {
     @builder = res_create_resource('STRING_BUILDER')
     @store = array()
     foreach(@key: @value in @self['private_store']) {
-        array_push(@store, array(@key, @value, @self['private_link'][@key]))
+        @store[] = array(@key, @value, @self['private_link'][@key])
     }
     array_sort(@store, closure(@left, @right){
         return(@left[2] > @right[2]);

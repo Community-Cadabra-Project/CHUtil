@@ -33,7 +33,7 @@ proc _test_entries() {
 
 proc _test_arrays_math() {
     _assert_closure_throw(
-        'ms.lang.CastException',
+        CastException,
         closure() {
             _util_array_and(
                 array(),
@@ -42,7 +42,7 @@ proc _test_arrays_math() {
         }
     )
     _assert_closure_throw(
-        'ms.lang.CastException',
+        CastException,
         closure() {
             _util_array_and(
                 array(a:1),

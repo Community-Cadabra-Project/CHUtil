@@ -14,7 +14,9 @@ proc _util_commander_register(@self, @key, closure @lymda) {
 }
 
 proc _util_commander_register_proc(@self, @key, string @proc_name) {
-    _util_commander_register(@self, @key, closure(){call_proc(@proc_name, @arguments[0])})
+    @self['private_commands'][@key] = closure(@array) {
+        return(call_proc_array(@proc_name, @array))
+    }
 }
 
 proc _util_commander_unregister(@self, @key) {
@@ -25,6 +27,7 @@ proc _util_commander_execute(@self, @key) {
     if (!array_index_exists(@self['private_commands'], @key)) {
         throw(IllegalArgumentException, "Command '@key' not registered!")
     }
+    @command = @self['private_commands'][@key]
     if (array_size(@arguments) > 2) {
         return(execute(@arguments[2..], @self['private_commands'][@key]))
     } else {

@@ -153,7 +153,7 @@ string proc _util_parse_exception(array @e) {
     return(string(@builder))
 }
 
-resource proc _util_parse_stack_trace(int @start = 0, array @traces = get_stack_trace(), int @end = -1, @builder = res_create_resource('STRING_BUILDER')) {
+Resource proc _util_parse_stack_trace(int @start = 0, array @traces = get_stack_trace(), int @end = -1, Resource @builder = res_create_resource('STRING_BUILDER')) {
     if (!@traces, return(@builder))
     @traces = @traces[cslice(@start, @end)]
     @size = array_size(@traces)

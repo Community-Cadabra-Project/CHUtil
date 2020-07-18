@@ -42,27 +42,33 @@ array proc _util_entries_to_assoc(array @array) {
     return(@map)
 }
 
-array proc _util_get_all_scripts(string @path) {
+array proc _util_get_all_scripts(string @path, string @filter = null) {
     @files = array()
     @list_files = list_files(@path)
     foreach(@file in @list_files) {
+        if (@filter && string_contains(@file, @filter)) {
+            continue()
+        }
         if (string_contains(@file, '.')) {
             if (string_contains(@file, '.ms'), @files[] = @path.'\\'.@file)
         } else {
-            array_push_all(@files, _util_get_all_scripts(@path.'\\'.@file))
+            array_push_all(@files, _util_get_all_scripts(@path.'\\'.@file, @filter))
         }
     }
     return(@files)
 }
 
-array proc _util_get_all_files(string @path) {
+array proc _util_get_all_files(string @path, string @filter = null) {
     @files = array()
     @list_files = list_files(@path)
-     foreach(@file in @list_files) {
+    foreach(@file in @list_files) {
+        if (@filter && string_contains(@file, @filter)) {
+           continue()
+        }
         if (string_contains(@file, '.')) {
             @files[] = @path.'\\'.@file
         } else {
-            array_push_all(@files, _util_get_all_files(@path.'\\'.@file))
+            array_push_all(@files, _util_get_all_files(@path.'\\'.@file, @filter))
         }
     }
     return(@files)

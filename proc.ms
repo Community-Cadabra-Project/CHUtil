@@ -95,6 +95,26 @@ void proc _util_make_file(string @path, string @split = '\\', int @ignore = 0) {
 	create_file(@path)
 }
 
+void proc _util_make_folder(string @path, string @split = '\\', int @ignore = 0) {
+    if (file_exists(@path)) {
+        return()
+    }
+    @folders = split(@split, @path)
+
+    if (@ignore > 0) {
+        @sub_path = array_implode(@folders[cslice(0, @ignore)], @split).@split
+    } else {
+        @sub_path = @folders[0].@split
+    }
+	
+	for(@i = @ignore + 1, @i < array_size(@folders), @i++){
+		@sub_path .= @folders[@i].@split
+		if(!file_exists(@sub_path)){
+			create_dir(@sub_path)
+		}
+	}
+}
+
 array proc _util_array_and(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')
@@ -187,4 +207,31 @@ void proc _util_error(string @msg) {
 
 string proc _util_get_cur_thread() {
     return(x_get_current_thread()[16..])
+}
+
+proc _method(array @self, string @key) {
+    array_remove(@arguments, 1)
+    return(execute_array(@arguments, @self[@key]))
+}
+
+proc _util_delete_closures(array @o) {
+    array @clone = array()
+    if (is_associative(@o)) {
+        foreach(@k: @v in @o) {
+            if (is_array(@v)) {
+                @clone[@k] = _util_delete_closures(@v)
+            } else if (!is_closure(@v)) {
+                @clone[@k] = @v
+            }
+        }
+    } else {
+        foreach(@v in @o) {
+            if (is_array(@v)) {
+                @clone[] = _util_delete_closures(@v)
+            } else if (!is_closure(@v)) {
+                @clone[] = @v
+            }
+        }
+    }
+    return(@clone)
 }

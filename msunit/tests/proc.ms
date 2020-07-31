@@ -32,7 +32,7 @@ proc _test_entries() {
 }
 
 proc _test_arrays_math() {
-    _assert_closure_throw(
+    _assert_execute_throw(
         CastException,
         closure() {
             _util_array_and(
@@ -41,7 +41,7 @@ proc _test_arrays_math() {
             )
         }
     )
-    _assert_closure_throw(
+    _assert_execute_throw(
         CastException,
         closure() {
             _util_array_and(

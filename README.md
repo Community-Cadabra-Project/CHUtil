@@ -19,8 +19,7 @@ For tests of MSUnit \[msutil\] call procadure ```_util_init_module```.
 
 4. Usefull procedurs:
 
-  - proc.ms
-  - methods.ms
+  - proc.mss
   - globals.ms
 
 5. MultiProgramming:

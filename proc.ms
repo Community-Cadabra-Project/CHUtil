@@ -214,6 +214,15 @@ proc _method(array @self, string @key) {
     return(execute_array(@arguments, @self[@key]))
 }
 
+proc _private_method(array @self, string @key) {
+    array_remove(@arguments, 1)
+    try {
+        return(execute_array(@arguments, @self['__private_methods__'][@key]))
+    } catch(NotFoundException @e) {
+        throw(UnsupportedOperationException, "Private method @key not found", @e)
+    }
+}
+
 proc _util_delete_closures(array @o) {
     array @clone = array()
     if (is_associative(@o)) {

@@ -14,8 +14,8 @@ proc _util_commander_register(@self, @key, closure @lymda) {
 }
 
 proc _util_commander_register_proc(@self, @key, string @proc_name) {
-    @self['private_commands'][@key] = closure(@array) {
-        return(call_proc_array(@proc_name, @array))
+    @self['private_commands'][@key] = closure() {
+        return(call_proc_array(@proc_name, @arguments))
     }
 }
 
@@ -29,7 +29,7 @@ proc _util_commander_execute(@self, @key) {
     }
     @command = @self['private_commands'][@key]
     if (array_size(@arguments) > 2) {
-        return(execute(@arguments[2..], @command))
+        return(execute_array(@arguments[2..], @command))
     } else {
         return(execute(@command))
     }

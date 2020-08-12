@@ -62,11 +62,14 @@ array proc _util_get_all_files(string @path, string @filter = null) {
     @files = array()
     @list_files = list_files(@path)
     foreach(@file in @list_files) {
-        if (@filter && string_contains(@file, @filter)) {
-           continue()
-        }
         if (string_contains(@file, '.')) {
-            @files[] = @path.'\\'.@file
+            if (@filter) {
+                if (string_contains(@file, @filter)) {
+                    @files[] = @path.'\\'.@file
+                }
+            } else {
+                @files[] = @path.'\\'.@file
+            }
         } else {
             array_push_all(@files, _util_get_all_files(@path.'\\'.@file, @filter))
         }

@@ -45,7 +45,7 @@ proc _util_properties_add_all(@self, @map) {
 }
 
 proc _util_properties_contains(@self, @key) {
-    return(boolean(array_index_exists(@self['private_store'], @key)))
+    return(array_index_exists(@self['private_store'], @key))
 }
 
 proc _util_properties_key_set(@self) {

@@ -50,9 +50,9 @@ array proc _util_get_all_scripts(string @path, string @filter = null) {
             continue()
         }
         if (string_contains(@file, '.')) {
-            if (string_contains(@file, '.ms'), @files[] = @path.'\\'.@file)
+            if (string_contains(@file, '.ms'), @files[] = @path._util_sdn().@file)
         } else {
-            array_push_all(@files, _util_get_all_scripts(@path.'\\'.@file, @filter))
+            array_push_all(@files, _util_get_all_scripts(@path._util_sdn().@file, @filter))
         }
     }
     return(@files)
@@ -65,19 +65,19 @@ array proc _util_get_all_files(string @path, string @filter = null) {
         if (string_contains(@file, '.')) {
             if (@filter) {
                 if (string_contains(@file, @filter)) {
-                    @files[] = @path.'\\'.@file
+                    @files[] = @path._util_sdn().@file
                 }
             } else {
-                @files[] = @path.'\\'.@file
+                @files[] = @path._util_sdn().@file
             }
         } else {
-            array_push_all(@files, _util_get_all_files(@path.'\\'.@file, @filter))
+            array_push_all(@files, _util_get_all_files(@path._util_sdn().@file, @filter))
         }
     }
     return(@files)
 }
 
-void proc _util_make_file(string @path, string @split = '\\', int @ignore = 0) {
+void proc _util_make_file(string @path, string @split, int @ignore = 0) {
     if (file_exists(@path)) {
         return()
     }
@@ -98,7 +98,7 @@ void proc _util_make_file(string @path, string @split = '\\', int @ignore = 0) {
 	create_file(@path)
 }
 
-void proc _util_make_folder(string @path, string @split = '\\', int @ignore = 0) {
+void proc _util_make_folder(string @path, string @split, int @ignore = 0) {
     if (file_exists(@path)) {
         return()
     }

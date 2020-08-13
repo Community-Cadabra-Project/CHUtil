@@ -13,7 +13,7 @@ string proc _util_msg(@module, @key, @stack = 1, @args = array()) {
     @model = import('org.cadabra.msutil.msg')[@module]
     @trace = get_stack_trace()
     #extract the path to the file relative  the folder from the stack
-    @file = @trace[@stack]['file'][cslice(@model['path']+1, -1)]
+    @file = replace(@trace[@stack]['file'][cslice(@model['path']+1, -1)], _util_sdn(), '.')
     return(sprintf(@model['msg'][@file][@key], @args))
 }
 

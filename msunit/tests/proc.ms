@@ -82,3 +82,48 @@ proc _test_arrays_math() {
         )
     )
 }
+
+proc _test_deep_push() {
+    @a = array(
+        0: '123',
+        1: 1,
+        3: array(
+            array(1, 2),
+            '123'
+        ),
+        test: array(
+            a: array(1, 2),
+            b: '123'
+        ),
+    )
+
+    @b = array(
+        0: 0,
+        3: array(
+            '123',
+            array(1, 2)
+        ),
+        4: 4,
+        test: array(
+            b: 'test',
+            a: array(1, 2, 3)
+        )
+    )
+
+    _assert_equals(
+        array(
+            0: 0,
+            1: 1,
+            3: array(
+                '123',
+                array(1, 2)
+            ),
+            4: 4,
+            test: array(
+                b: 'test',
+                a: array(1, 2, 3)
+            )
+        ),
+        _util_array_deap_push(@a, @b)
+    )
+}

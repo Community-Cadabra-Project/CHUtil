@@ -118,6 +118,28 @@ void proc _util_make_folder(string @path, string @split, int @ignore = 0) {
 	}
 }
 
+proc _util_array_deap_push(array @arr1, array @arr2) {
+
+    proc _deep_push(@val1, @val2) {
+        if (!is_array(@val2)) {
+            return(@val2)
+        } else if (!is_array(@val1)) {
+            return(array_deep_clone(@val2))
+        } else {
+            @res = array_deep_clone(@val1)
+            foreach(@key: @v in @val2) {
+                if (array_index_exists(@val1, @key)) {
+                    @res[@key] = _deep_push(@val1[@key], @v)
+                } else {
+                    @res[@key] = @v
+                }
+            }
+            return(@res)
+        }
+    }
+    return(_deep_push(@arr1, @arr2))
+}
+
 array proc _util_array_and(array @arr1, array @arr2) {
     if (is_associative(@arr1)) {
         throw(CastException, 'arr1 must be not associative array')

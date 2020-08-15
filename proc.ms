@@ -77,19 +77,27 @@ array proc _util_get_all_files(string @path, string @filter = null) {
     return(@files)
 }
 
-void proc _util_make_file(string @path, string @split, int @ignore = 0) {
+void proc _util_make_file(string @path, int @ignore = -1) {
     if (file_exists(@path)) {
         return()
     }
+    @split = _util_sdn()
     @folders = split(@split, @path)
 
-    if (@ignore > 0) {
+    if (@ignore != 0) {
         @sub_path = array_implode(@folders[cslice(0, @ignore)], @split).@split
     } else {
         @sub_path = @folders[0].@split
     }
+
+    int @start_i
+    if (@ignore < 0) {
+        @start_i = array_size(@folders) + @ignore
+    } else {
+        @start_i = @ignore
+    }
 	
-	for(@i = @ignore+1, @i < array_size(@folders) - 1, @i++){
+	for(@i = @start_i+1, @i < array_size(@folders) - 1, @i++){
 		@sub_path .= @folders[@i].@split
 		if(!file_exists(@sub_path)){
 			create_dir(@sub_path)
@@ -98,19 +106,27 @@ void proc _util_make_file(string @path, string @split, int @ignore = 0) {
 	create_file(@path)
 }
 
-void proc _util_make_folder(string @path, string @split, int @ignore = 0) {
+void proc _util_make_folder(string @path, int @ignore = -1) {
     if (file_exists(@path)) {
         return()
     }
+    @split = _util_sdn()
     @folders = split(@split, @path)
 
-    if (@ignore > 0) {
+    if (@ignore != 0) {
         @sub_path = array_implode(@folders[cslice(0, @ignore)], @split).@split
     } else {
         @sub_path = @folders[0].@split
     }
 	
-	for(@i = @ignore + 1, @i < array_size(@folders), @i++){
+    int @start_i
+    if (@ignore < 0) {
+        @start_i = array_size(@folders) + @ignore
+    } else {
+        @start_i = @ignore
+    }
+	
+	for(@i = @start_i+1, @i < array_size(@folders), @i++){
 		@sub_path .= @folders[@i].@split
 		if(!file_exists(@sub_path)){
 			create_dir(@sub_path)

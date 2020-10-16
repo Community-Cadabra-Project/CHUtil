@@ -77,7 +77,7 @@ array proc _util_get_all_files(string @path, string @filter = null) {
     return(@files)
 }
 
-void proc _util_make_file(string @path, int @ignore = -1) {
+void proc _util_make_file(string @path, int @ignore = 0) {
     if (file_exists(@path)) {
         return()
     }
@@ -106,7 +106,7 @@ void proc _util_make_file(string @path, int @ignore = -1) {
 	create_file(@path)
 }
 
-void proc _util_make_folder(string @path, int @ignore = -1) {
+void proc _util_make_folder(string @path, int @ignore = 0) {
     if (file_exists(@path)) {
         return()
     }

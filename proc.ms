@@ -84,6 +84,10 @@ void proc _util_make_file(string @path, int @ignore = 0) {
     @split = _util_sdn()
     @folders = split(@split, @path)
 
+    if (abs(@ignore) >= array_size(@folders)) {
+        @ignore = (abs(@ignore) * (array_size(@folders) - 1)) / @ignore
+    }
+    
     if (@ignore != 0) {
         @sub_path = array_implode(@folders[cslice(0, @ignore)], @split).@split
     } else {
@@ -112,6 +116,10 @@ void proc _util_make_folder(string @path, int @ignore = 0) {
     }
     @split = _util_sdn()
     @folders = split(@split, @path)
+
+    if (abs(@ignore) >= array_size(@folders)) {
+        @ignore = (abs(@ignore) * (array_size(@folders) - 1)) / @ignore
+    }
 
     if (@ignore != 0) {
         @sub_path = array_implode(@folders[cslice(0, @ignore)], @split).@split

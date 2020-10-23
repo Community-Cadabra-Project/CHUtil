@@ -115,5 +115,6 @@ proc _util_properties_to_string(@self) {
         string_append(@builder, @store[@i][0], '=', @store[@i][1], '\n')
     }
     string_append(@builder, @store[-1][0], '=', @store[-1][1])
+    string_append(@builder, '\n')
     return(string(@builder))
 }
